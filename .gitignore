@@ -1,0 +1,60 @@
+# Ignorar archivos y directorios de sistemas operativos
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Ignorar archivos y directorios de entornos de desarrollo (IDE)
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignorar archivos de paquetes
+node_modules/
+vendor/
+build/
+dist/
+
+# Ignorar archivos de logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorar archivos de configuración de entorno
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignorar archivos de compilación y temporales
+*.tmp
+*.temp
+*.bak
+*.orig
+*.swp
+*.swo
+*.cache
+*.sublime-project
+*.sublime-workspace
+
+# Ignorar archivos de bases de datos
+*.sqlite
+*.db
+#*.sql
+
+# Ignorar archivos comprimidos
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+
+# Ignorar directorios de subproyectos (si usas git en ellos)
+sub-proyecto/node_modules/
+sub-proyecto/build/
+
+# Ignorar archivos personales o de prueba
+personal_notes.txt
+test_data/
