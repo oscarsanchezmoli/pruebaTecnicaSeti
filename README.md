@@ -13,8 +13,9 @@ Este proyecto contiene la solución a la prueba técnica para el rol de **Ingeni
 ## 📋 Requirimientos
 
 - Java 17
-- maven 3.9
+- maven
 - PostgreSQL
+- MongoDB
 - Docker
 
 ## 🐳 Levantar Contenedores necesarios
@@ -45,6 +46,9 @@ En caso de que quieras detener y eliminar completamente el contenedor, junto con
 >```shell
 > docker-compose down --volumes --rmi all
 >```
+
+## 🧩 Parte 1: Fondos
+
 
 ## 🧩 Parte 2: Consultas SQL
 
