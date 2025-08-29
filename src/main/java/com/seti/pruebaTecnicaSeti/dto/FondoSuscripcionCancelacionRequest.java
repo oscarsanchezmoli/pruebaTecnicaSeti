@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CancelacionRequest {
+public class FondoSuscripcionCancelacionRequest {
 
     @NotBlank(message = "El ID del cliente es obligatorio")
     private String clienteId;

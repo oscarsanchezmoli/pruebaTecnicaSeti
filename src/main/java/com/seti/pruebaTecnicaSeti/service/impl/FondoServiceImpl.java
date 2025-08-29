@@ -1,6 +1,6 @@
 package com.seti.pruebaTecnicaSeti.service.impl;
 
-import com.seti.pruebaTecnicaSeti.dto.SuscripcionRequest;
+import com.seti.pruebaTecnicaSeti.dto.FondoSuscripcionCancelacionRequest;
 import com.seti.pruebaTecnicaSeti.dto.TransaccionResponse;
 import com.seti.pruebaTecnicaSeti.entity.Cliente;
 import com.seti.pruebaTecnicaSeti.entity.Fondo;
@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -31,7 +30,7 @@ public class FondoServiceImpl implements FondoService {
     private final Util util;
 
     @Override
-    public TransaccionResponse suscribirFondo(SuscripcionRequest request) {
+    public TransaccionResponse suscribirFondo(FondoSuscripcionCancelacionRequest request) {
 
         log.info("Procesando suscripción de fondo - Cliente: {}, Fondo: {}",
                 request.getClienteId(), request.getFondoId());
@@ -70,7 +69,7 @@ public class FondoServiceImpl implements FondoService {
         clienteRepository.save(cliente);
 
         // Crear transacción
-        Transaccion transaccionGuardada = transaccionRepository.save(Transaccion
+        Transaccion transactionGuardada = transaccionRepository.save(Transaccion
                 .builder()
                         .clienteId(cliente.getId())
                         .fondoId(fondo.getId())
@@ -78,7 +77,48 @@ public class FondoServiceImpl implements FondoService {
                         .tipo(TipoTransaccion.APERTURA)
                 .build());
 
-        TransaccionResponse transaction = util.convertTo(transaccionGuardada, TransaccionResponse.class);
+        TransaccionResponse transaction = util.convertTo(transactionGuardada, TransaccionResponse.class);
+        transaction.setNombreFondo(fondo.getNombre());
+
+        return transaction;
+    }
+
+    @Override
+    public TransaccionResponse cancelarSuscripcion(FondoSuscripcionCancelacionRequest request) {
+
+        log.info("Procesando cancelación de suscripción - Cliente: {}, Fondo: {}",
+                request.getClienteId(), request.getFondoId());
+
+        Cliente cliente = clienteRepository.findById(request.getClienteId())
+                .orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
+
+        Fondo fondo = fondoRepository.findById(request.getFondoId())
+                .orElseThrow(() -> new NotFoundException("Fondo no encontrado"));
+
+        // Verificar si está suscrito
+        if (cliente.getFondosSuscritos() == null ||
+                !cliente.getFondosSuscritos().contains(request.getFondoId())) {
+            throw new NotFoundException("El cliente no está suscrito a este fondo");
+        }
+
+        // Devolver el monto al saldo del cliente
+        BigDecimal nuevoSaldo = cliente.getSaldoDisponible().add(fondo.getMontoMinimo());
+        cliente.setSaldoDisponible(nuevoSaldo);
+        cliente.getFondosSuscritos().remove(request.getFondoId());
+        clienteRepository.save(cliente);
+
+        // Crear transacción
+        Transaccion transactionGuardada = transaccionRepository.save(Transaccion
+                .builder()
+                .clienteId(cliente.getId())
+                .fondoId(fondo.getId())
+                .monto(fondo.getMontoMinimo())
+                .tipo(TipoTransaccion.CANCELACION)
+                .build());
+
+        log.info("Cancelación exitosa - Transacción ID: {}", transactionGuardada.getId());
+
+        TransaccionResponse transaction = util.convertTo(transactionGuardada, TransaccionResponse.class);
         transaction.setNombreFondo(fondo.getNombre());
 
         return transaction;

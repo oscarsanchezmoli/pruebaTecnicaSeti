@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/clientes")
 @RequiredArgsConstructor
-@Tag(name = "Fondos", description = "API para gestión de fondos de inversión")
+@Tag(name = "Clientes", description = "API para gestión de fondos de inversión")
 @Slf4j
 public class ClienteController {
 

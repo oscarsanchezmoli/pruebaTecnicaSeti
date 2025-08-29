@@ -1,7 +1,7 @@
 package com.seti.pruebaTecnicaSeti.controller;
 
 import com.seti.pruebaTecnicaSeti.dto.ApiResponse;
-import com.seti.pruebaTecnicaSeti.dto.SuscripcionRequest;
+import com.seti.pruebaTecnicaSeti.dto.FondoSuscripcionCancelacionRequest;
 import com.seti.pruebaTecnicaSeti.dto.TransaccionResponse;
 import com.seti.pruebaTecnicaSeti.service.FondoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,11 +32,26 @@ public class FondoController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Saldo insuficiente o datos inválidos"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Cliente o fondo no encontrado")
     })
-    public ResponseEntity<ApiResponse<TransaccionResponse>> suscribirFondo(@Valid @RequestBody SuscripcionRequest request) {
+    public ResponseEntity<ApiResponse<TransaccionResponse>> suscribirFondo(@Valid @RequestBody FondoSuscripcionCancelacionRequest request) {
         log.info("Solicitud de suscripción recibida - Cliente: {}, Fondo: {}",
                 request.getClienteId(), request.getFondoId());
 
         TransaccionResponse transaccionId = fondoService.suscribirFondo(request);
         return ResponseEntity.ok(ApiResponse.success("Suscripción exitosa", transaccionId));
+    }
+
+    @PostMapping("/cancelar")
+    @Operation(summary = "Cancelar suscripción a un fondo", description = "Permite cancelar la suscripción a un fondo y devuelve el monto al cliente")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Cancelación exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "El cliente no está suscrito al fondo"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Cliente o fondo no encontrado")
+    })
+    public ResponseEntity<ApiResponse<TransaccionResponse>> cancelarSuscripcion(@Valid @RequestBody FondoSuscripcionCancelacionRequest request) {
+        log.info("Solicitud de cancelación recibida - Cliente: {}, Fondo: {}",
+                request.getClienteId(), request.getFondoId());
+
+        TransaccionResponse transaccion = fondoService.cancelarSuscripcion(request);
+        return ResponseEntity.ok(ApiResponse.success("Cancelación exitosa", transaccion));
     }
 }
