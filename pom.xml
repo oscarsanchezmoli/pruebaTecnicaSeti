@@ -11,8 +11,8 @@
 	<groupId>com.seti</groupId>
 	<artifactId>pruebaTecnicaSeti</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>prueba-tecnica-seti</name>
-	<description>Presentación de la prueba técnica</description>
+	<name>pruebaTecnicaSeti</name>
+	<description>Presentacion de la prueba tecnica para seti</description>
 	<url/>
 	<licenses>
 		<license/>
