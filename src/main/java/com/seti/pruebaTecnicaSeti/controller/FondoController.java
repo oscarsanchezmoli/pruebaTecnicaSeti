@@ -1,0 +1,42 @@
+package com.seti.pruebaTecnicaSeti.controller;
+
+import com.seti.pruebaTecnicaSeti.dto.ApiResponse;
+import com.seti.pruebaTecnicaSeti.dto.SuscripcionRequest;
+import com.seti.pruebaTecnicaSeti.dto.TransaccionResponse;
+import com.seti.pruebaTecnicaSeti.service.FondoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/fondos")
+@RequiredArgsConstructor
+@Tag(name = "Fondos", description = "API para gestión de fondos de inversión")
+@Slf4j
+public class FondoController {
+
+    private final FondoService fondoService;
+
+    @PostMapping("/suscribir")
+    @Operation(summary = "Suscribirse a un fondo", description = "Permite a un cliente suscribirse a un fondo de inversión")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Suscripción exitosa"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Saldo insuficiente o datos inválidos"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Cliente o fondo no encontrado")
+    })
+    public ResponseEntity<ApiResponse<TransaccionResponse>> suscribirFondo(@Valid @RequestBody SuscripcionRequest request) {
+        log.info("Solicitud de suscripción recibida - Cliente: {}, Fondo: {}",
+                request.getClienteId(), request.getFondoId());
+
+        TransaccionResponse transaccionId = fondoService.suscribirFondo(request);
+        return ResponseEntity.ok(ApiResponse.success("Suscripción exitosa", transaccionId));
+    }
+}
