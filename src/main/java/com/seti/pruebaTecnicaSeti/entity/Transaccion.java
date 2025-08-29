@@ -35,4 +35,8 @@ public class Transaccion {
 
     @Field("monto")
     private BigDecimal monto;
+
+    @CreatedDate
+    @Field("fecha_transaccion")
+    private LocalDateTime fechaTransaccion;
 }

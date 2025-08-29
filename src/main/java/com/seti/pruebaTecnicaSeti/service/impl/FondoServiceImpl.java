@@ -17,7 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -75,6 +79,7 @@ public class FondoServiceImpl implements FondoService {
                         .fondoId(fondo.getId())
                         .monto(fondo.getMontoMinimo())
                         .tipo(TipoTransaccion.APERTURA)
+                        .fechaTransaccion(LocalDateTime.now())
                 .build());
 
         TransaccionResponse transaction = util.convertTo(transactionGuardada, TransaccionResponse.class);
@@ -114,6 +119,7 @@ public class FondoServiceImpl implements FondoService {
                 .fondoId(fondo.getId())
                 .monto(fondo.getMontoMinimo())
                 .tipo(TipoTransaccion.CANCELACION)
+                .fechaTransaccion(LocalDateTime.now())
                 .build());
 
         log.info("Cancelación exitosa - Transacción ID: {}", transactionGuardada.getId());
@@ -122,5 +128,38 @@ public class FondoServiceImpl implements FondoService {
         transaction.setNombreFondo(fondo.getNombre());
 
         return transaction;
+    }
+
+    @Override
+    public List<TransaccionResponse> obtenerHistorialTransacciones(String clienteId) {
+
+        log.info("Obteniendo historial de transacciones para cliente: {}", clienteId);
+
+        Cliente cliente = clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
+
+        List<Transaccion> transacciones = transaccionRepository.findByClienteIdOrderByFechaTransaccionDesc(clienteId);
+
+        return transacciones.stream()
+                .map(this::mapearTransaccionAResponse)
+                .collect(Collectors.toList());
+    }
+
+
+    private TransaccionResponse mapearTransaccionAResponse(Transaccion transaccion) {
+        Optional<Fondo> fondo = fondoRepository.findById(transaccion.getFondoId());
+        String nombreFondo = fondo.map(Fondo::getNombre).orElse("Fondo no encontrado");
+
+
+        return TransaccionResponse
+                .builder()
+                .id(transaccion.getId())
+                .clienteId(transaccion.getClienteId())
+                .fondoId(transaccion.getFondoId())
+                .nombreFondo(nombreFondo)
+                .tipo(transaccion.getTipo())
+                .monto(transaccion.getMonto())
+                .fechaTransaccion(transaccion.getFechaTransaccion())
+                .build();
     }
 }
