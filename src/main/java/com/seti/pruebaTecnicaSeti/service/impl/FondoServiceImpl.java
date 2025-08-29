@@ -11,6 +11,7 @@ import com.seti.pruebaTecnicaSeti.repository.ClienteRepository;
 import com.seti.pruebaTecnicaSeti.repository.FondoRepository;
 import com.seti.pruebaTecnicaSeti.repository.TransaccionRepository;
 import com.seti.pruebaTecnicaSeti.service.FondoService;
+import com.seti.pruebaTecnicaSeti.service.NotificationService;
 import com.seti.pruebaTecnicaSeti.utils.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class FondoServiceImpl implements FondoService {
     private final ClienteRepository clienteRepository;
     private final TransaccionRepository transaccionRepository;
     private final Util util;
+    private final NotificationService notificationService;
 
     @Override
     public TransaccionResponse suscribirFondo(FondoSuscripcionCancelacionRequest request) {
@@ -84,6 +86,14 @@ public class FondoServiceImpl implements FondoService {
 
         TransaccionResponse transaction = util.convertTo(transactionGuardada, TransaccionResponse.class);
         transaction.setNombreFondo(fondo.getNombre());
+
+        // Enviar notificación
+        try {
+            notificationService.enviarNotificacionSuscripcion(cliente, fondo);
+        } catch (Exception e) {
+            log.warn("Error enviando notificación: {}", e.getMessage());
+        }
+
 
         return transaction;
     }
