@@ -69,7 +69,52 @@ A continuación, se presentan las funcionalidades del sistema, las reglas de neg
 - [x] Si no hay saldo suficiente, mostrar: “No tiene saldo disponible para vincularse al fondo <Nombre del fondo>”
 
 
-### Solución código
+### 💡Solución código
+
+#### Endpoints de la API
+
+A continuación, se listan los endpoints principales disponibles en esta aplicación, junto con una breve descripción de su funcionalidad.
+
+##### 🔗 Clientes (/api/clientes)
+| Método |          Endpoint          |                         Descripción                          |
+|:------:|:--------------------------:|:------------------------------------------------------------:|
+|  POST  |             /              |   Crea un nuevo cliente con saldo inicial de $500.000 COP    |
+|  GET   | /transacciones/{clienteId} | Obtiene el historial completo de transacciones de un cliente | 
+
+##### 🔗 Fondos (/api/fondos)
+| Método |            Endpoint            |                                Descripción                                |
+|:------:|:------------------------------:|:-------------------------------------------------------------------------:|
+|  POST  |           /suscribir           |         Permite a un cliente suscribirse a un fondo de inversión          |
+|  GET   |           /cancelar            | Permite cancelar la suscripción a un fondo y devuelve el monto al cliente |
+
+#### ⚙️ Ccnfiguracion de notificaciones
+
+Esta sección detalla cómo configurar los servicios de notificaciones de la aplicación, incluyendo las credenciales y ajustes para el envío de correos electrónicos y mensajes SMS.
+
+##### 📧 Configuración de Email
+
+Para el envío de correos electrónicos, la aplicación utiliza el servicio de email gratuito de **Mailtrap**. Es importante aclarar que, para que el envío sea válido, se requeriría un **dominio** propio, el cual no está configurado en este proyecto. Por lo tanto, con esta implementación, los correos no llegarán a cuentas personales.
+
+En su lugar, **Mailtrap** intercepta todos los correos electrónicos salientes y los envía a una bandeja de entrada virtual (**Sandbox**). Los correos capturados se pueden visualizar directamente en la interfaz de **Mailtrap**. Esto es ideal para el desarrollo y las pruebas, ya que permite verificar el contenido y el formato de los correos sin enviarlos a usuarios reales.
+
+Las propiedades clave que debes configurar en **application.properties** son:
+
+- **spring.mail.host:** El host de SMTP proporcionado por Mailtrap.
+- **spring.mail.port:** El puerto de SMTP.
+- **spring.mail.username:** El nombre de usuario de tu bandeja de entrada de Mailtrap.
+- **spring.mail.password:** La contraseña de tu bandeja de entrada.
+
+>```properties
+>spring.mail.host=sandbox.smtp.mailtrap.io
+>spring.mail.port=587
+>spring.mail.username=
+>spring.mail.password=
+>```
+
+> [!NOTE]  
+> Ten en cuenta que se puede utilizar cualquier servidor **SMTP**; sin embargo, para este ejemplo se utilizó **Mailtrap**.
+
+##### 📱 Configuración de SMS
 
 ## 🧩 Parte 2: Consultas SQL
 
