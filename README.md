@@ -87,7 +87,7 @@ A continuación, se listan los endpoints principales disponibles en esta aplicac
 |  POST  |           /suscribir           |         Permite a un cliente suscribirse a un fondo de inversión          |
 |  GET   |           /cancelar            | Permite cancelar la suscripción a un fondo y devuelve el monto al cliente |
 
-#### ⚙️ Ccnfiguracion de notificaciones
+#### ⚙️ Configuracion de notificaciones
 
 Esta sección detalla cómo configurar los servicios de notificaciones de la aplicación, incluyendo las credenciales y ajustes para el envío de correos electrónicos y mensajes SMS.
 
@@ -126,8 +126,8 @@ Las propiedades clave que debes configurar en **application.properties** son:
 
 >```properties
 >infobip.api.key=
->infobip.base.url
->infobip.sender
+>infobip.base.url=
+>infobip.sender=
 >```
 
 ## 🧩 Parte 2: Consultas SQL
