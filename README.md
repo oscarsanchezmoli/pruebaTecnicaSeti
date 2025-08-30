@@ -116,6 +116,20 @@ Las propiedades clave que debes configurar en **application.properties** son:
 
 ##### 📱 Configuración de SMS
 
+Para el envío de mensajes de texto (**SMS**), se ha integrado **Infobip** utilizando su plan gratuito de prueba. Es importante tener en cuenta que este plan ofrece 15 mensajes de texto gratuitos. Por lo tanto, considera esta limitación al momento de realizar las pruebas.
+
+Las propiedades clave que debes configurar en **application.properties** son:
+
+- **infobip.api.key:** La clave de tu API para autenticarte.
+- **infobip.base.url:** La URL base de tu cuenta de Infobip.
+- **infobip.sender:** El número de teléfono desde el cual se envían los mensajes.
+
+>```properties
+>infobip.api.key=
+>infobip.base.url
+>infobip.sender
+>```
+
 ## 🧩 Parte 2: Consultas SQL
 
 Esta sección contiene la consulta **SQL** para la segunda parte del desafío, basándose en el esquema de la base de datos. A continuación, se muestra el diagrama diseñado para representar dicha estructura.
