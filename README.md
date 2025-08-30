@@ -49,6 +49,27 @@ En caso de que quieras detener y eliminar completamente el contenedor, junto con
 
 ## 🧩 Parte 1: Fondos
 
+Esta sección contiene el código correspondiente a la primera parte del desafío.
+Este desarrollo fue realizado utilizando **Spring Boot 3.5.5**, **Java 17** y **MongoDB 6**.
+A continuación, se presentan las funcionalidades del sistema, las reglas de negocio y las actividades solicitadas.
+
+### Funcionalidades del sistema:
+
+- [x] Suscribirse a un nuevo fondo (apertura). 
+- [x] Cancelar la suscripción a un fondo actual. 
+- [x] Ver historial de transacciones (aperturas y cancelaciones). 
+- [x] Enviar notificación por email o SMS según preferencia del usuario al suscribirse a un
+   fondo.
+
+### Reglas de negocio:
+- [x] Monto inicial del cliente: COP $500.000.
+- [x] Cada transacción debe tener un identificador único.
+- [x] Cada fondo tiene un monto mínimo de vinculación.
+- [x] Al cancelar una suscripción, el valor de vinculación se retorna al cliente.
+- [x] Si no hay saldo suficiente, mostrar: “No tiene saldo disponible para vincularse al fondo <Nombre del fondo>”
+
+
+### Solución código
 
 ## 🧩 Parte 2: Consultas SQL
 
