@@ -5,6 +5,7 @@ import com.seti.pruebaTecnicaSeti.entity.Fondo;
 import com.seti.pruebaTecnicaSeti.enums.PreferenciaNotificacion;
 import com.seti.pruebaTecnicaSeti.service.NotificationService;
 import com.seti.pruebaTecnicaSeti.utils.EnviarEmail;
+import com.seti.pruebaTecnicaSeti.utils.SmsInfobip;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class NotificationServiceImpl implements NotificationService {
 
     private final EnviarEmail enviarEmail;
+    private final SmsInfobip smsInfobip;
 
     @Override
     public void enviarNotificacionSuscripcion(Cliente cliente, Fondo fondo) {
@@ -30,7 +32,7 @@ public class NotificationServiceImpl implements NotificationService {
             if (cliente.getPreferenciaNotificacion() == PreferenciaNotificacion.EMAIL) {
                 enviarEmail.enviarEmail(cliente.getEmail(), "Suscripción a Fondo - BTG Pactual", mensaje);
             } else if (cliente.getPreferenciaNotificacion() == PreferenciaNotificacion.SMS) {
-                //smsService.enviarSms(cliente.getTelefono(), mensaje);
+                smsInfobip.enviarSms(cliente.getTelefono(), mensaje);
             }
 
             log.info("Notificación enviada exitosamente");
