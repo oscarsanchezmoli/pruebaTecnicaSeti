@@ -4,16 +4,16 @@ import com.seti.pruebaTecnicaSeti.dto.ClienteRequest;
 import com.seti.pruebaTecnicaSeti.dto.ClienteResponse;
 import com.seti.pruebaTecnicaSeti.entity.Cliente;
 import com.seti.pruebaTecnicaSeti.enums.PreferenciaNotificacion;
+import com.seti.pruebaTecnicaSeti.enums.Roles;
 import com.seti.pruebaTecnicaSeti.exception.NotFoundException;
 import com.seti.pruebaTecnicaSeti.repository.ClienteRepository;
 import com.seti.pruebaTecnicaSeti.service.ClienteService;
+import com.seti.pruebaTecnicaSeti.utils.Constantes;
 import com.seti.pruebaTecnicaSeti.utils.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -34,15 +34,13 @@ public class ClienteServiceImpl implements ClienteService {
             throw new NotFoundException("Ya existe un cliente con este email");
         }
 
-        PreferenciaNotificacion notificacion = util.validarEnum(PreferenciaNotificacion.class, request.getPreferenciaNotificacion());
-
         Cliente cliente = util.convertTo(request, Cliente.class);
-        cliente.setSaldoDisponible(new BigDecimal("5000"));
-        cliente.setPreferenciaNotificacion(notificacion);
-        Cliente clienteGuardado = clienteRepository.save(cliente)
-                ;
-        log.info("Cliente creado exitosamente con ID: {}", clienteGuardado.getId());
+        cliente.setSaldoDisponible(Constantes.SALDO_INICIAL_CLIENTE);
+        cliente.setPreferenciaNotificacion(util.validarEnum(PreferenciaNotificacion.class, request.getPreferenciaNotificacion()));
+        Cliente clienteGuardado = clienteRepository.save(cliente);
+        cliente.getRoles().add(Roles.CLIENTE.name());
 
+        log.info("Cliente creado exitosamente con ID: {}", clienteGuardado.getId());
         return util.convertTo(clienteGuardado, ClienteResponse.class);
     }
 }

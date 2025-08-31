@@ -11,7 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -39,5 +41,10 @@ public class Cliente {
     private PreferenciaNotificacion preferenciaNotificacion;
 
     @Field("fondos_suscritos")
+    @Builder.Default
     private List<String> fondosSuscritos = new ArrayList<>();
+
+    @Field("roles")
+    @Builder.Default
+    private Set<String> roles = new HashSet<>();
 }
