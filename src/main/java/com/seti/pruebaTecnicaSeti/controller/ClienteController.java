@@ -29,7 +29,7 @@ public class ClienteController {
     private final ClienteService clienteService;
     private final FondoService fondoService;
 
-    @PostMapping
+    @PostMapping("/")
     @Operation(summary = "Crear nuevo cliente", description = "Crea un nuevo cliente con saldo inicial de $500.000 COP")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Cliente creado exitosamente"),
@@ -46,7 +46,7 @@ public class ClienteController {
     }
 
 
-    @GetMapping("/transacciones/{clienteId}")
+    @GetMapping("/{clienteId}/transacciones")
     @Operation(summary = "Obtener historial de transacciones", description = "Obtiene el historial completo de transacciones de un cliente")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Historial obtenido exitosamente"),
