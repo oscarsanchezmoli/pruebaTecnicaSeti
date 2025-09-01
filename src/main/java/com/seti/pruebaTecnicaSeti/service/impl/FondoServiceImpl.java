@@ -155,7 +155,6 @@ public class FondoServiceImpl implements FondoService {
                 .collect(Collectors.toList());
     }
 
-
     private TransaccionResponse mapearTransaccionAResponse(Transaccion transaccion) {
         Optional<Fondo> fondo = fondoRepository.findById(transaccion.getFondoId());
         String nombreFondo = fondo.map(Fondo::getNombre).orElse("Fondo no encontrado");
